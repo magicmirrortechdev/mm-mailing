@@ -14,28 +14,44 @@ app.use(bodyParser.json())
 
 app.post('/mailing', mailing)
 
+const transportConfig = {
+  service: 'SendGrid',
+  auth: {
+    user: SENDGRID_USERNAME,
+    pass: SENDGRID_PASSWORD,
+  },
+}
+
 function mailing(req, res, next) {
   const { name, email, text } = req.body
-
-  const transportConfig = {
-    service: 'SendGrid',
-    auth: {
-      user: SENDGRID_USERNAME,
-      pass: SENDGRID_PASSWORD
-    }
-  }
 
   const mailConfig = {
     from: `"${name}" <${email}>`,
     to: CONTACT_EMAIL,
     subject: '🚀 MM Devs | Someone asked for help 🚀',
-    text
+    text,
   }
 
-  const transporter = createTransport(transportConfig)
+  createTransport(transportConfig)
     .sendMail(mailConfig)
-    .then(info => res.status(200).json(info))
-    .catch(err => res.status(500).json(err))
+    .then((info) => res.status(200).json(info))
+    .catch((err) => res.status(500).json(err))
+}
+
+function campaign(req, res, next) {
+  const { companyName, name, email, phone } = req.body
+
+  const mailConfig = {
+    from: `"${name} - ${phone}" <${email}>`,
+    to: CONTACT_EMAIL,
+    subject: '🚀 MM Devs | Someone asked for help 🚀 | Campaign',
+    text,
+  }
+
+  createTransport(transportConfig)
+    .sendMail(mailConfig)
+    .then((info) => res.status(200).json(info))
+    .catch((err) => res.status(500).json(err))
 }
 
 app.listen(process.env.PORT)

@@ -13,6 +13,7 @@ app.use(cors())
 app.use(bodyParser.json())
 
 app.post('/mailing', mailing)
+app.post('/campaign', campaign)
 
 const transportConfig = {
   service: 'SendGrid',

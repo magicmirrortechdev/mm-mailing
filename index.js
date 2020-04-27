@@ -46,7 +46,7 @@ function campaign(req, res, next) {
     from: `"${name} - ${phone}" <${email}>`,
     to: CONTACT_EMAIL,
     subject: '🚀 MM Devs | Someone asked for help 🚀 | Campaign',
-    text,
+    text: `${name} reach us through the campaign Home Workout, the contact number is ${phone} `,
   }
 
   createTransport(transportConfig)
